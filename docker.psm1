@@ -167,4 +167,32 @@ function Invoke-FoundryAPI {
     Invokes the Foundry VTT API.
 
     .DESCRIPTION
-    This function interacts
+    This function interacts with the Foundry VTT API.
+
+.PARAMETER containerName
+The name of the container.
+
+.PARAMETER apiEndpoint
+The API endpoint to invoke.
+
+.EXAMPLE
+Invoke-FoundryAPI -containerName "my-container" -apiEndpoint "/some/endpoint"
+#>
+param (
+    [Parameter(Mandatory=$true)]
+    [string]$containerName,
+
+    [Parameter(Mandatory=$true)]
+    [string]$apiEndpoint
+)
+
+try {
+    $containerIP = (docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $containerName).Trim()
+
+    # Assuming Foundry VTT API runs on port 30000 (adjust accordingly)
+    $apiURL = "http://$($containerIP):30000$apiEndpoint"
+
+    # Placeholder: Use Invoke-RestMethod or similar to interact with the API
+} catch {
+    Write-Error "Failed to invoke Foundry VTT API. $_"
+}
