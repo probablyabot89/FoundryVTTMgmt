@@ -16,10 +16,10 @@ Prerequisite   : PowerShell v5.1 or later
 # Function to initialize Azure resources for Foundry
 function Initialize-FoundryAzure {
     param (
-        [string]$ResourceGroup,
-        [string]$VMName,
+        [string]$ResourceGroup ="FoundryVtt",
+        [string]$VMName ="FoundryHost",
         [string]$Location = "uksouth",
-        [string]$VMSize = "Standard_B1ls",
+        [string]$VMSize = "Standard_B1ls", #cheapest/free for 12 months
         [string]$PublicIPAddress = "foundry-public-ip",
         [string]$OpenPorts = "30000"
     )
