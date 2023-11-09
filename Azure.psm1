@@ -19,9 +19,10 @@ function Initialize-FoundryAzure {
         [string]$ResourceGroup ="FoundryVtt",
         [string]$VMName ="FoundryHost",
         [string]$Location = "uksouth",
-        [string]$VMSize = "Standard_B1ls", #cheapest/free for 12 months
+        [string]$VMSize = "Standard_B1ls", # cheapest/free for 12 months
         [string]$PublicIPAddress = "foundry-public-ip",
-        [string]$OpenPorts = "30000"
+        [string]$OpenPorts = "30000",
+        [string]$DockerImage = "foundryvtt/official"
     )
 
     az group create --name $ResourceGroup --location $Location
@@ -31,7 +32,12 @@ function Initialize-FoundryAzure {
     az network vnet create --resource-group $ResourceGroup --name "foundry-vnet" --address-prefixes "10.0.0.0/16" --location $Location
     az network vnet subnet create --resource-group $ResourceGroup --vnet-name "foundry-vnet" --name "foundry-subnet" --address-prefixes "10.0.0.0/24"
     az network nic create --resource-group $ResourceGroup --name "foundry-nic" --vnet-name "foundry-vnet" --subnet "foundry-subnet"
-    az vm create --resource-group $ResourceGroup --name $VMName --location $Location --size $VMSize --image UbuntuLTS --admin-username azureuser --generate-ssh-keys --nics "foundry-nic" --boot-diagnostics-storage "foundrydiagstorage"
+    
+    # Install Docker and pull Foundry VTT image
+    az vm extension set --resource-group $ResourceGroup --vm-name $VMName --name CustomScriptExtension --publisher Microsoft.Compute --version 1.10 --settings '{"script": "apt-get update && apt-get install -y docker.io && docker pull $DockerImage"}'
+    
+    # Start Docker container
+    az vm extension set --resource-group $ResourceGroup --vm-name $VMName --name CustomScriptExtension --publisher Microsoft.Compute --version 1.10 --settings '{"script": "docker run -d -p $OpenPorts:30000 --name foundry-container $DockerImage"}'
 }
 
 # Function to stop Foundry server
