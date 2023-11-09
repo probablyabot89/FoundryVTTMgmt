@@ -24,27 +24,6 @@ function Set-ConsoleColor {
     )
 
     $Host.UI.RawUI.ForegroundColor = $color
-}# Function to set console color
-function Set-ConsoleColor {
-    param (
-        [System.ConsoleColor]$color
-    )
-
-    $Host.UI.RawUI.ForegroundColor = $color
-}
-
-# Function to display main menu
-function Show-MainMenu {
-    Set-ConsoleColor -color Yellow
-    Write-Host "======================================="
-    Write-Host "          Welcome to My UI              "
-    Write-Host "======================================="
-    Write-Host "1. Azure Functions"
-    Write-Host "2. Foundry VTT API Functions"
-    Write-Host "3. Remote Docker Functions"
-    Write-Host "Q. Quit"
-    Write-Host "======================================="
-    Set-ConsoleColor -color White
 }
 
 # Function to execute selected menu option
@@ -57,21 +36,21 @@ function Execute-MenuOption {
         '1' { Show-AzureMenu }
         '2' { Show-FoundryMenu }
         '3' { Show-DockerMenu }
-        'Q' { Write-Host "Exiting..." }
+        '4' { Write-Host "Exiting..." }
         default { Write-Host "Invalid option. Please try again." }
     }
 }
 
-# Function to display Azure menu
-function Show-AzureMenu {
+# Function to display main menu
+function Show-MainMenu {
     Set-ConsoleColor -color Yellow
     Write-Host "======================================="
-    Write-Host "          Azure Functions              "
+    Write-Host "          Welcome to My UI              "
     Write-Host "======================================="
-    Write-Host "1. Create Azure Resource Group"
-    Write-Host "2. Monitor Azure Costs"
-    Write-Host "3. Remove Azure Resources"
-    Write-Host "B. Back to Main Menu"
+    Write-Host "1. Azure Functions"
+    Write-Host "2. Foundry VTT API Functions"
+    Write-Host "3. Remote Docker Functions"
+    Write-Host "4. Quit"
     Write-Host "======================================="
     Set-ConsoleColor -color White
 }
@@ -91,21 +70,6 @@ function Execute-AzureMenuOption {
     }
 }
 
-# Function to display Foundry VTT API menu
-function Show-FoundryMenu {
-    Set-ConsoleColor -color Yellow
-    Write-Host "======================================="
-    Write-Host "    Foundry VTT API Functions           "
-    Write-Host "======================================="
-    Write-Host "1. Initialize Foundry Azure Resources"
-    Write-Host "2. Stop Foundry Server"
-    Write-Host "3. Remove Foundry Azure Resources"
-    Write-Host "4. Monitor Azure Costs"
-    Write-Host "B. Back to Main Menu"
-    Write-Host "======================================="
-    Set-ConsoleColor -color White
-}
-
 # Function to execute selected Foundry VTT API menu option
 function Execute-FoundryMenuOption {
     param (
@@ -120,21 +84,6 @@ function Execute-FoundryMenuOption {
         'B' { Show-MainMenu }
         default { Write-Host "Invalid option. Please try again." }
     }
-}
-
-# Function to display Remote Docker menu
-function Show-DockerMenu {
-    Set-ConsoleColor -color Yellow
-    Write-Host "======================================="
-    Write-Host "       Remote Docker Functions          "
-    Write-Host "======================================="
-    Write-Host "1. Start Foundry Container"
-    Write-Host "2. Stop Foundry Container"
-    Write-Host "3. Remove Foundry Container"
-    Write-Host "4. Invoke Foundry API"
-    Write-Host "B. Back to Main Menu"
-    Write-Host "======================================="
-    Set-ConsoleColor -color White
 }
 
 # Function to execute selected Remote Docker menu option
@@ -157,7 +106,7 @@ function Execute-DockerMenuOption {
 function Run-UI {
     $menuOption = ''
 
-    while ($menuOption -ne 'Q') {
+    while ($menuOption -ne '4') {
         Show-MainMenu
         $menuOption = Read-Host "Select an option"
 
