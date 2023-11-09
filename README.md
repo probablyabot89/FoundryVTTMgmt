@@ -1,14 +1,45 @@
-# FoundryVTTMgmt
-A git for automating management tasks for Foundry VTT hosts on cloud service providers
+```markdown
+# Foundry VTT Automation for Azure
 
+This repository contains scripts for automating management tasks for Foundry VTT hosts on Azure. The goal is to provide a simple command-line tool using batch/powershell scripts to set up an Azure instance with Docker, manage network configurations, save and shut down the instance, and boot up with loading capabilities for Foundry VTT.
 
-My last foundyvtt instance was an amazon ec2 ubuntu instance with node installed. It was simple and worked, except when broke it or eventually i ran out of dree credits.
+## User Story
 
-Migrating was tough.
+As a user, I can download this repository onto my PC and use batch/powershell scripts to interact with Azure and Docker. This allows for easy setup of an Azure instance with the necessary configurations for Foundry VTT, including saving and shutting down the instance, and later booting up with loading capabilities.
 
-this repo will store my scripts for setting a docker host on azure for easier future migration.
+## Setup
 
+1. Clone this repository to your local machine:
 
-user story, I download this git onto my pc. it uses batch/powershell to interact with azure and docker, providing a simple cmd line tool for setting up the azure instance and network as required for foundry, saving and shutting down (with key figures like az storage used), and booting up and loading.
+   ```bash
+   git clone https://github.com/your-username/foundry-azure-automation.git
+   cd foundry-azure-automation
+   ```
 
-The docker and azure commands should be isolated in seperate scripts where possibke, to ensure simole future migrations are simple.
+2. Run the initialization script to set up the Azure VM and Foundry VTT:
+
+   ```bash
+   ./initialize-foundry-azure.ps1
+   ```
+
+   This script creates the Azure VM, installs Docker, and sets up Foundry VTT.
+
+3. Save and shut down the instance when not in use:
+
+   ```bash
+   ./save-foundry-azure.ps1
+   ```
+
+   This script saves the game state, shuts down the Docker instance, and stops the server.
+
+4. Boot up and load Foundry VTT when needed:
+
+   ```bash
+   ./start-foundry-azure.ps1
+   ```
+
+   This script starts the server, Docker instance, and loads the save state if available.
+
+## Structure
+
+The repository is organized with separate scripts for initialization, saving, and starting to ensure simplicity and ease of future migrations. Adjust configurations and resource names as needed for your setup.
