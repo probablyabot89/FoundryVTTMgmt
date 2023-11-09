@@ -43,3 +43,6 @@ As a user, I can download this repository onto my PC and use batch/powershell sc
 ## Structure
 
 The repository is organized with separate scripts for initialization, saving, and sperate modules for each tech stack, to ensure simplicity and ease of future migrations. Adjust configurations and resource names as needed for your setup.
+
+
+The development UI for creating these scripts and getting up to other useful foundry tasks can be can be run with 'launch.bat', all the files need to be present.
