@@ -1,7 +1,7 @@
 ```markdown
 # Foundry VTT Automation for Azure
 
-This repository contains scripts for automating management tasks for Foundry VTT hosts on Azure. The goal is to provide a simple command-line tool using batch/powershell scripts to set up an Azure instance with Docker, manage network configurations, save and shut down the instance, and boot up with loading capabilities for Foundry VTT.
+This repository contains scripts for automating management tasks for Foundry VTT hosts on Azure. The goal is to provide a simple command-line tool using batch/powershell scripts to set up an Azure instance with Docker, manage network configurations, save and shut down the instance, and a quick boot up and load into gam capabilities for Foundry VTT.
 
 ## User Story
 
