@@ -5,7 +5,7 @@ This repository contains scripts for automating management tasks for Foundry VTT
 
 ## User Story
 
-As a user, I can download this repository onto my PC and use batch/powershell scripts to interact with Azure and Docker. This allows for easy setup of an Azure instance with the necessary configurations for Foundry VTT, including saving and shutting down the instance, and later booting up with loading capabilities.
+As a user, I can download this repository onto my PC and use batch/powershell scripts to interact with Azure and Docker. This allows for easy setup of an Azure instance with the necessary configurations for Foundry VTT, including saving and shutting down the instance, and fast booting uo and getting in game/dev environments using save/loading capabilities.
 
 ## Setup
 
