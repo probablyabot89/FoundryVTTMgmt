@@ -15,6 +15,34 @@ Prerequisite   : PowerShell v5.1 or later
 
 #>
 
+# Function to set the remote Docker host
+function Set-RemoteDockerHost {
+    <#
+    .SYNOPSIS
+    Sets the remote Docker host for interaction.
+
+    .DESCRIPTION
+    This function sets the remote Docker host for interaction.
+
+    .PARAMETER RemoteHostIP
+    The IP address of the remote Docker host.
+
+    .EXAMPLE
+    Set-RemoteDockerHost -RemoteHostIP "192.168.1.100"
+    #>
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$RemoteHostIP
+    )
+
+    try {
+        Set-Variable -Name remoteHost -Value "tcp://$RemoteHostIP:2375" -Scope Global -Force
+        Write-Host "Remote Docker host set to $RemoteHostIP."
+    } catch {
+        Write-Error "Failed to set remote Docker host. $_"
+    }
+}
+
 # Function to start Foundry VTT Docker container
 function Start-FoundryContainer {
     <#
@@ -139,29 +167,4 @@ function Invoke-FoundryAPI {
     Invokes the Foundry VTT API.
 
     .DESCRIPTION
-    This function interacts with the Foundry VTT API.
-
-    .PARAMETER containerName
-    The name of the container.
-
-    .PARAMETER apiEndpoint
-    The API endpoint to invoke.
-
-    .EXAMPLE
-    Invoke-FoundryAPI -containerName "my-container" -apiEndpoint "/some/endpoint"
-    #>
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$containerName,
-
-        [Parameter(Mandatory=$true)]
-        [string]$apiEndpoint
-    )
-
-    try {
-        $containerIP = (docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $containerName).Trim()
-
-        # Assuming Foundry VTT API runs on port 30000 (adjust accordingly)
-        $apiURL = "http://$($containerIP):30000$apiEndpoint"
-
-        # Placeholder: Use Invoke-RestMethod or similar to interact with the API
+    This function interacts
