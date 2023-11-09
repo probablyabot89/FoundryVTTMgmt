@@ -52,38 +52,32 @@ function Start-FoundryContainer {
     .DESCRIPTION
     This function starts a Foundry VTT Docker container.
 
-    .PARAMETER containerName
+    .PARAMETER ContainerName
     The name of the container.
 
-    .PARAMETER image
+    .PARAMETER Image
     The Docker image to use for the container.
 
-    .PARAMETER port
-    The port to map to the container's 30000 port.
-
     .EXAMPLE
-    Start-FoundryContainer -containerName "my-container" -image "foundryvtt/image" -port 40000
+    Start-FoundryContainer -ContainerName "foundry-container" -Image "foundryvtt/image"
     #>
     param (
         [Parameter(Mandatory=$true)]
-        [string]$containerName,
+        [string]$ContainerName = "foundry-container",
 
         [Parameter(Mandatory=$true)]
-        [string]$image,
-
-        [Parameter(Mandatory=$true)]
-        [int]$port
+        [string]$Image
     )
 
     try {
-        $existingContainer = Get-DockerContainer -Name $containerName -ErrorAction SilentlyContinue
+        $existingContainer = Get-DockerContainer -Name $ContainerName -ErrorAction SilentlyContinue
 
         if ($existingContainer) {
-            Write-Host "Container '$containerName' is already running."
+            Write-Host "Container '$ContainerName' is already running."
         } else {
-            docker run -d -p $port:30000 --name $containerName $image
+            docker run -d -p 30000:30000 --name $ContainerName $Image
 
-            Write-Host "Started Foundry container '$containerName' on port $port."
+            Write-Host "Started Foundry container '$ContainerName' on port 30000."
         }
     } catch {
         Write-Error "Failed to start Foundry container. $_"
@@ -99,26 +93,26 @@ function Stop-FoundryContainer {
     .DESCRIPTION
     This function stops a Foundry VTT Docker container.
 
-    .PARAMETER containerName
+    .PARAMETER ContainerName
     The name of the container.
 
     .EXAMPLE
-    Stop-FoundryContainer -containerName "my-container"
+    Stop-FoundryContainer -ContainerName "foundry-container"
     #>
     param (
         [Parameter(Mandatory=$true)]
-        [string]$containerName
+        [string]$ContainerName = "foundry-container"
     )
 
     try {
-        $existingContainer = Get-DockerContainer -Name $containerName -ErrorAction SilentlyContinue
+        $existingContainer = Get-DockerContainer -Name $ContainerName -ErrorAction SilentlyContinue
 
         if ($existingContainer) {
-            docker stop $containerName
+            docker stop $ContainerName
 
-            Write-Host "Stopped Foundry container '$containerName'."
+            Write-Host "Stopped Foundry container '$ContainerName'."
         } else {
-            Write-Host "Container '$containerName' is not currently running."
+            Write-Host "Container '$ContainerName' is not currently running."
         }
     } catch {
         Write-Error "Failed to stop Foundry container. $_"
@@ -134,26 +128,26 @@ function Remove-FoundryContainer {
     .DESCRIPTION
     This function removes a Foundry VTT Docker container.
 
-    .PARAMETER containerName
+    .PARAMETER ContainerName
     The name of the container.
 
     .EXAMPLE
-    Remove-FoundryContainer -containerName "my-container"
+    Remove-FoundryContainer -ContainerName "foundry-container"
     #>
     param (
         [Parameter(Mandatory=$true)]
-        [string]$containerName
+        [string]$ContainerName = "foundry-container"
     )
 
     try {
-        $existingContainer = Get-DockerContainer -Name $containerName -ErrorAction SilentlyContinue
+        $existingContainer = Get-DockerContainer -Name $ContainerName -ErrorAction SilentlyContinue
 
         if ($existingContainer) {
-            docker rm $containerName
+            docker rm $ContainerName
 
-            Write-Host "Removed Foundry container '$containerName'."
+            Write-Host "Removed Foundry container '$ContainerName'."
         } else {
-            Write-Host "Container '$containerName' does not exist."
+            Write-Host "Container '$ContainerName' does not exist."
         }
     } catch {
         Write-Error "Failed to remove Foundry container. $_"
@@ -169,30 +163,31 @@ function Invoke-FoundryAPI {
     .DESCRIPTION
     This function interacts with the Foundry VTT API.
 
-.PARAMETER containerName
-The name of the container.
+    .PARAMETER ContainerName
+    The name of the container.
 
-.PARAMETER apiEndpoint
-The API endpoint to invoke.
+    .PARAMETER ApiEndpoint
+    The API endpoint to invoke.
 
-.EXAMPLE
-Invoke-FoundryAPI -containerName "my-container" -apiEndpoint "/some/endpoint"
-#>
-param (
-    [Parameter(Mandatory=$true)]
-    [string]$containerName,
+    .EXAMPLE
+    Invoke-FoundryAPI -ContainerName "foundry-container" -ApiEndpoint "/some/endpoint"
+    #>
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$ContainerName = "foundry-container",
 
-    [Parameter(Mandatory=$true)]
-    [string]$apiEndpoint
-)
+        [Parameter(Mandatory=$true)]
+        [string]$ApiEndpoint
+    )
 
-try {
-    $containerIP = (docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $containerName).Trim()
+    try {
+        $containerIP = (docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $ContainerName).Trim()
 
-    # Assuming Foundry VTT API runs on port 30000 (adjust accordingly)
-    $apiURL = "http://$($containerIP):30000$apiEndpoint"
+        # Assuming Foundry VTT API runs on port 30000 (adjust accordingly)
+        $apiURL = "http://$($containerIP):30000$ApiEndpoint"
 
-    # Placeholder: Use Invoke-RestMethod or similar to interact with the API
-} catch {
-    Write-Error "Failed to invoke Foundry VTT API. $_"
+        # Placeholder: Use Invoke-RestMethod or similar to interact with the API
+    } catch {
+        Write-Error "Failed to invoke Foundry VTT API. $_"
+    }
 }
